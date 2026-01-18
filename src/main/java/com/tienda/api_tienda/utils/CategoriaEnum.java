@@ -1,0 +1,13 @@
+package com.tienda.api_tienda.utils;
+
+public enum CategoriaEnum {
+    BOTANAS_Y_SNACKS,
+    DULCES_Y_GOLOSINAS,
+    BEBIDAS,
+    PANADERIA,
+    FRUTAS_Y_VERDURAS,
+    ALIMENTOS_BASICOS,
+    PRODUCTOS_LIMPIEZA,
+    HIGIENE_PERSONAL,
+    PRODUCTOS_MASCOSTAS
+}
