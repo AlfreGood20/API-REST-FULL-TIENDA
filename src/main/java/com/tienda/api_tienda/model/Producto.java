@@ -45,7 +45,7 @@ public class Producto {
     @Column(name = "precio_compra")
     private BigDecimal precioCompra;
 
-    @Column(name = "img_url", nullable = false)
+    @Column(name = "img_url", nullable = true)
     private String imgUrl;
 
     @Column(name = "codigo_barra", nullable = true)

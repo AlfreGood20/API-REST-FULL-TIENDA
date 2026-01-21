@@ -131,4 +131,33 @@ public interface ProductoApi {
     )
     @SecurityRequirement(name = "Bearer")
     ResponseEntity<List<ProductoResponse>> obtenerMasVendidos(int pagina, int tamano);
+
+
+    @Operation(
+        summary = "Obtienes productos sin filtro",
+        description = "Obtienes todos los productos registrados sin orden"
+    )
+    @ApiResponse(
+        description = "Lista de productos",
+        responseCode = "200",
+        content = @Content(
+            mediaType = MediaType.APPLICATION_JSON_VALUE,
+            array = @ArraySchema(schema = @Schema(implementation = ProductoResponse.class)) 
+        )
+    )
+    ResponseEntity<List<ProductoResponse>> obtenerProductosGlobal(int pagina, int tamano);
+
+    @Operation(
+        summary = "Elimina producto por id",
+        description = "Eliminas producto por id. No devuelve nada"
+    )
+    @ApiResponse(
+        description = "Eliminado con exito",
+        responseCode = "204",
+        content = @Content(
+            mediaType = MediaType.APPLICATION_JSON_VALUE
+        )
+    )
+    @SecurityRequirement(name = "Bearer")
+    ResponseEntity<Void> eliminarPorId(long id);
 }

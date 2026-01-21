@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +33,7 @@ public class ProductoControl implements ProductoApi {
 
     @Override
     @PostMapping(value = "/admin/producto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ProductoResponse> crear(@Valid @RequestPart("producto") ProductoRequest request, @RequestPart("file") MultipartFile file){
+    public ResponseEntity<ProductoResponse> crear(@Valid @RequestPart(name = "producto") ProductoRequest request, @RequestPart(name = "file") MultipartFile file){
         return new ResponseEntity<ProductoResponse>(service.nuevo(request, file), HttpStatus.CREATED);
     }
 
@@ -78,6 +79,19 @@ public class ProductoControl implements ProductoApi {
             @RequestParam int pagina,
             @RequestParam int tamano) {
         return ResponseEntity.ok(null);
+    }
+
+    @Override
+    @DeleteMapping("/admin/producto/{id}")
+    public ResponseEntity<Void> eliminarPorId(long id) {
+        service.eliminarPorId(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    @GetMapping("/public/productos")
+    public ResponseEntity<List<ProductoResponse>> obtenerProductosGlobal(@RequestParam int pagina,@RequestParam int tamano) {
+        return ResponseEntity.ok(service.obtenerProductos(pagina, tamano));
     }
 
 }
