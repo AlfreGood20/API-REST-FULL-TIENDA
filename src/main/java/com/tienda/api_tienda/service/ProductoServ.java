@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -53,12 +54,17 @@ public class ProductoServ {
                 Files.createDirectories(uploadPath); // Crea la carpeta
             }
 
+            String fileNameFull = file.getOriginalFilename();
+            String extension = fileNameFull.substring(fileNameFull.indexOf("."));
+
+            String imgName = UUID.randomUUID().toString().substring(0,8)+extension;
+
             // Ruta completa
-            Path ruta = uploadPath.resolve(file.getOriginalFilename());
+            Path ruta = uploadPath.resolve(imgName);
 
             // Guardar archivo
             Files.copy(file.getInputStream(), ruta);
-            return "/uploads/"+file.getOriginalFilename();
+            return "/uploads/"+imgName;
         } catch (IOException ex) {}
 
         return null;
@@ -67,8 +73,9 @@ public class ProductoServ {
 
     public ProductoResponse nuevo(ProductoRequest request, MultipartFile imagen){
         Categoria categoria = getCategoria(request.getCategoriaId());
-
-        Producto producto = mapper.dtoToEntity(request,getFileName(imagen), categoria, LocalDateTime.now());
+        String imgUrl = (imagen == null || imagen.isEmpty() ? null : getFileName(imagen));
+        
+        Producto producto = mapper.dtoToEntity(request, imgUrl, categoria, LocalDateTime.now());
         return mapper.entityToDto(productoRepo.save(producto), categoria.getNombre());
     }
 
@@ -94,6 +101,17 @@ public class ProductoServ {
         Pageable pegable = PageRequest.of(pagina, tamaño);
 
         List<ProductoResponse> listaProducto = productoRepo.findByCategoria_CategoriaId(id, pegable)
+            .stream()
+            .map(p -> mapper.entityToDto(p, p.getCategoria().getNombre()))
+            .collect(Collectors.toList());
+
+        return listaProducto;
+    }
+
+    public List<ProductoResponse> obtenerProductos(int pagina, int tamano){
+        Pageable pegable = PageRequest.of(pagina, tamano);
+
+        List<ProductoResponse> listaProducto = productoRepo.findAll(pegable)
             .stream()
             .map(p -> mapper.entityToDto(p, p.getCategoria().getNombre()))
             .collect(Collectors.toList());
