@@ -69,7 +69,7 @@ public class AuthServ {
         Cookie refreshCookie = new Cookie("refreshToken", tokenRefresh);
         refreshCookie.setHttpOnly(true);
         refreshCookie.setPath("/"); 
-        refreshCookie.setMaxAge(7 * 24 * 60 * 60); // Maxima de duracion
+        refreshCookie.setMaxAge(24 * 60 * 60); // 1 dia
         response.addCookie(refreshCookie);
         
         return new LoginResponse(tokenAccess);
