@@ -155,4 +155,17 @@ public class ResControlDiviceExeption {
         return new ResponseEntity<>(respuesta, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(ConflictoExeption.class)
+    public ResponseEntity<MensajeExepcion> manejarConflictoRecurso(ConflictoExeption ex, HttpServletRequest request){
+        MensajeExepcion respuesta = MensajeExepcion.builder()
+                .timestamp(LocalDateTime.now())
+                .status(409)
+                .error(HttpStatus.CONFLICT.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+
+        return new ResponseEntity<MensajeExepcion>(respuesta, HttpStatus.CONFLICT);
+    }
+
 }
