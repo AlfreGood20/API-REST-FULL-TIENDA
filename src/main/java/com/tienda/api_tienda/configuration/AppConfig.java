@@ -12,15 +12,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import com.tienda.api_tienda.model.Categoria;
+import com.tienda.api_tienda.model.Metodo;
 import com.tienda.api_tienda.model.Rol;
 import com.tienda.api_tienda.repository.CategoriaRepo;
+import com.tienda.api_tienda.repository.MetodoRepo;
 import com.tienda.api_tienda.repository.RolRepo;
 import com.tienda.api_tienda.service.UsuarioDetailsServ;
 import com.tienda.api_tienda.utils.CategoriaEnum;
+import com.tienda.api_tienda.utils.MetodoEnum;
 import com.tienda.api_tienda.utils.RolEnum;
-
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -68,6 +69,7 @@ public class AppConfig implements WebMvcConfigurer{
     private final RolRepo rolRepo;
     private final UsuarioDetailsServ usuarioDetailsServ;
     private final CategoriaRepo categoriaRepo;
+    private final MetodoRepo metodoRepo;
 
     @Bean
     public AuthenticationManager authenticationManager (AuthenticationConfiguration configuration) throws Exception{
@@ -114,6 +116,19 @@ public class AppConfig implements WebMvcConfigurer{
             if (!categoriaRepo.existsByNombre(nombre)) {
                 categoriaRepo.save(Categoria.builder().nombre(nombre).build());
             }
+        }
+    }
+
+    @PostConstruct
+    public void preMetodos(){
+        var metodos = Arrays.asList(
+            Metodo.builder().nombre(MetodoEnum.EFECTIVO).build(),
+            Metodo.builder().nombre(MetodoEnum.TARJETA).build(),
+            Metodo.builder().nombre(MetodoEnum.TRANSFERENCIA).build()
+        );
+
+        for(Metodo metodo : metodos){
+            if(!metodoRepo.existsByNombre(metodo.getNombre())) metodoRepo.save(metodo);
         }
     }
 
