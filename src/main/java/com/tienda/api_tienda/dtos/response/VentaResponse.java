@@ -3,7 +3,6 @@ package com.tienda.api_tienda.dtos.response;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tienda.api_tienda.model.Estado;
 import com.tienda.api_tienda.model.Metodo;

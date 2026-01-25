@@ -1,5 +1,6 @@
 package com.tienda.api_tienda.dtos.response;
 
+import java.math.BigDecimal;
 import lombok.*;
 
 @Builder
@@ -11,4 +12,5 @@ public class DetalleVentaResponse {
 
     private ProductoResponse producto;
     private int cantidad;
+    private BigDecimal subTotal;
 }
