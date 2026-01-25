@@ -22,7 +22,6 @@ public class VentaControl implements VentaApi{
     @Override
     @PostMapping("/admin/venta")
     public ResponseEntity<VentaResponse> crear(@RequestBody VentaRequest request) {
-        System.out.println("Usuario ID recibido en controlador: " + request.getUsuarioId());
         return new ResponseEntity<VentaResponse>(service.nueva(request), HttpStatus.CREATED);
     }
 }
