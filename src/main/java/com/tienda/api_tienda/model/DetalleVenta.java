@@ -1,7 +1,6 @@
 package com.tienda.api_tienda.model;
 
 import java.math.BigDecimal;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "detalle_venta")
@@ -23,6 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@ToString
 public class DetalleVenta {
 
     @Id
@@ -44,6 +45,6 @@ public class DetalleVenta {
     @Column(nullable = false)
     private BigDecimal precioUnitario;
 
-    @Column(nullable = false)
-    private BigDecimal subtotal;
+    @Column(name = "subtotal", nullable = false)
+    private BigDecimal subTotal;
 }
